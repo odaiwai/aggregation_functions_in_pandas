@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Demonstrate the use of aggregation functions in Pandas."""
+import matplotlib.pyplot as plt
 import pandas as pd
 
 
@@ -30,6 +31,8 @@ def main() -> None:
     df_group = df[agg_func.keys()].groupby(by='Electors').agg(agg_func)
 
     # Calculate the proportions of the total
+    df['PopPct'] = df.Population/pop_sum
+    df['ECPct'] = df.Electors/ec_sum
     df_group['PopPct'] = df_group.Population/pop_sum
     df_group['ECPct'] = df_group.Electors/ec_sum
     df_group = df_group.drop('State', axis=1)
@@ -43,6 +46,29 @@ def main() -> None:
     print(df_group.to_markdown(tablefmt='pipe',
                                colalign=colaligns,
                                floatfmt=floatfmts))
+
+    # Just for fun, make a bubble plot
+    fig, ax = plt.subplots(figsize=(9, 9), layout='constrained')
+    fig.suptitle('Compare EC representation against Popular Representation.',
+                 fontsize=18)
+
+    df.plot.scatter(ax=ax, x='ECPct', y='ECPct', c='gray',
+                    label='Line of Equality')
+    df.plot.scatter(ax=ax,
+                    x='PopPct', y='ECPct',
+                    s=df['Electors'] * 20,
+                    c='Electors',
+                    cmap='viridis')
+    # breakpoint()
+    def annotate_df(row):
+        ax.annotate(xy=(row.PopPct, row.ECPct), text=row.Abbrev,
+                    xytext=(10, -5),
+                    textcoords='offset points',
+                    size=10,
+                    color='darkslategrey')
+
+    _ = df.apply(annotate_df, axis=1)
+    plt.show()
 
 
 if __name__ == '__main__':
