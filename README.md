@@ -62,4 +62,4 @@ This produces ouput like this:
 Why separate files for electors and states? That was just the data that I found.  I could have easily put them together in the editor.
 
 Added a silly plot:
-![EC Representation](.ec_representation.png)
+![EC Representation](./ec_representation.png)
