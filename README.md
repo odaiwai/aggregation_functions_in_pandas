@@ -8,7 +8,9 @@ Based on a couple of blog posts by [Dr. Drang](https://leancrew.com/all-this/):
 
 The key is to supply an aggregation function to the `groupby` operation, so that pandas can take sensible actions with each of the fields.  To have a different action for each columnm, a dictionary of `'<field>': 'operation'` can be passed:
 
-In this case, we have two text fields that we could like to join up as comma separated lists, and two numeric fields we would like to sum.  To aggregate the text fields, we need to define a function to convert the `pd.Series` object to a list, and then `join` the list using the build in `str.join()` function, as shown below.
+In this case, we have two text fields that we could like to join up as comma separated lists, and two numeric fields we would like to sum.  To aggregate the text fields, we need to define a function to convert the `pd.Series` object to a list, and then `join` the list using the build in `str.join()` function, as shown below. This could be done with a `lambda` function, but I prefer to define these things as a separate function.
+
+
 ```python
 
     ...
