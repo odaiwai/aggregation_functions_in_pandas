@@ -59,7 +59,7 @@ def main() -> None:
                     s=df['Electors'] * 20,
                     c='Electors',
                     cmap='viridis')
-    # breakpoint()
+    # Annotate the states
     def annotate_df(row):
         ax.annotate(xy=(row.PopPct, row.ECPct), text=row.Abbrev,
                     xytext=(10, -5),
@@ -68,7 +68,9 @@ def main() -> None:
                     color='darkslategrey')
 
     _ = df.apply(annotate_df, axis=1)
-    plt.show()
+
+    fig.savefig(f'ec_representation.png', format='png', bbox_inches='tight')
+    plt.close(fig)
 
 
 if __name__ == '__main__':
