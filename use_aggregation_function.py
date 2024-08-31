@@ -26,6 +26,7 @@ def main() -> None:
 
     # Aggregate the dataframe by the number of Electors, and aggregate
     # using the aggration function
+    # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.groupby.html
     df_group = df[agg_func.keys()].groupby(by='Electors').agg(agg_func)
 
     # Calculate the proportions of the total
@@ -33,9 +34,11 @@ def main() -> None:
     df_group['ECPct'] = df_group.Electors/ec_sum
     df_group = df_group.drop('State', axis=1)
 
-    # formatting and alignment
+    # formatting and alignment for .to_markdown():
+    # https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.to_markdown.html
+    # https://pypi.org/project/tabulate/
     colaligns = ['center'] * 2 + ['right'] * 4
-    floatfmts = [None] * 2 + ['0.0:,d'] * 2 + ['0.2%'] * 2
+    floatfmts = [None] * 2 + ['0.0d'] * 2 + ['0.2%'] * 2
 
     print(df_group.to_markdown(tablefmt='pipe',
                                colalign=colaligns,
